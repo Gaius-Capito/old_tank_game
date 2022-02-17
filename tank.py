@@ -2,11 +2,14 @@ import pygame
 
 
 class Tank:
-    """Класс для управления танком.
+    """
+    Класс для управления танком
     """
 
     def __init__(self, ot_game):
-        """Инициализирует танк и задает его начальную позицию."""
+        """
+        Инициализирует танк и задает его начальную позицию
+        """
         self.screen = ot_game.screen
         self.settings = ot_game.settings
         self.screen_rect = ot_game.screen.get_rect()  # Координаты края экрана
@@ -21,5 +24,7 @@ class Tank:
         self.bullet_color = (178, 34, 34)
 
     def blitme(self):
-        """Рисует корабль в текущей позиции."""
+        """
+        Рисует танк в текущей позиции
+        """
         self.screen.blit(self.image, self.rect)
