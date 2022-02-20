@@ -13,15 +13,14 @@ class Tank:
         self.screen = ot_game.screen
         self.settings = ot_game.settings
         self.screen_rect = ot_game.screen.get_rect()  # Координаты края экрана
-        self.image = pygame.image.load('images/tank.png')  # Загружает изображение корабля
+        self.image = pygame.image.load('images/tank.png')  # Загружает изображение танка
+        self.image = pygame.transform.scale(self.image, (self.image.get_width() // 7, self.image.get_height() // 7))
+        self.tank_img_r = pygame.transform.rotate(self.image, 270)
+        self.tank_img_b = pygame.transform.rotate(self.image, 180)
+        self.tank_img_l = pygame.transform.rotate(self.image, 90)
+        self.tank_img_t = pygame.transform.rotate(self.image, 0)
         self.rect = self.image.get_rect()
-        self.rect.midbottom = self.screen_rect.midbottom  # Каждый новый корабль появляется у нижнего края экрана.
-
-        # Параметры снаряда
-        self.bullet_speed = 5
-        self.bullet_width = 3
-        self.bullet_height = 3
-        self.bullet_color = (178, 34, 34)
+        self.rect.midbottom = self.screen_rect.midbottom  # Каждый новый танк появляется у нижнего края экрана.
 
     def blitme(self):
         """

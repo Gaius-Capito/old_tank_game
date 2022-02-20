@@ -16,5 +16,14 @@ class Bullet(Sprite):
         self.settings = ot_game.settings
         self.color = self.settings.bullet_color
         self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)  # Создание снаряда в позиции (0,0) и назначение правильной позиции.
-        self.rect.midtop = ot_game.ship.rect.midtop
+        self.rect.midtop = ot_game.tank.rect.midtop
         self.y = float(self.rect.y)  # Позиция снаряда хранится в виде десятичной дроби.
+
+    def update(self):
+        """Перемещает снаряд по экрану."""
+        self.y -= self.settings.bullet_speed  # Обновление позиции снаряда.
+        self.rect.y = self.y
+
+    def draw_bullet(self):
+        """Вывод снаряда на экран."""
+        pygame.draw.rect(self.screen, self.color, self.rect)
