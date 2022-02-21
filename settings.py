@@ -11,9 +11,10 @@ class Settings:
         self.FPS = 10
         self.bg_color = (192, 192, 192)
         self.tank_speed = 5
+
         # настройки снаряда
         self.bullet_speed = 15
-        self.bullet_width = 3
-        self.bullet_height = 7
+        self.bullet_width = 5
+        self.bullet_height = 5
         self.bullet_color = (128, 0, 0)
         self.bullets_allowed = 7
