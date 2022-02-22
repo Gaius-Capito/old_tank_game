@@ -4,6 +4,7 @@ import pygame
 from settings import Settings
 from tank import Tank
 from bullet import Bullet, TankState
+from enemies import Enemy
 
 
 class OldTank:
@@ -14,7 +15,9 @@ class OldTank:
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         self.tank = Tank(self)
         self.bullets = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
         self.clock = pygame.time.Clock()
+        self._create_enemies()
         pygame.display.set_caption("Old Tank")
 
     def run_game(self):
@@ -58,7 +61,9 @@ class OldTank:
             sys.exit()
 
     def _fire_bullet(self):
-        """Создание снаряда и добавление в 'pygame.sprite.Group()'."""
+        """
+        Создание снаряда и добавление в 'pygame.sprite.Group()'.
+        """
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
@@ -76,11 +81,20 @@ class OldTank:
                     or bullet.rect.left >= self.screen.get_rect().right or bullet.rect.right <= 0):
                 self.bullets.remove(bullet)
 
+    def _create_enemies(self):
+        """
+        Создание танков противника.
+        """
+        for enemy_number in range(self.settings.enemy_number):
+            enemy = Enemy(self)
+            self.enemies.add(enemy)
+
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)  # Цвет главного экрана
         self.tank.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.enemies.draw(self.screen)
 
         pygame.display.flip()  # Отображение экрана.
 

@@ -18,3 +18,5 @@ class Settings:
         self.bullet_height = 5
         self.bullet_color = (128, 0, 0)
         self.bullets_allowed = 7
+
+        self.enemy_number = 4

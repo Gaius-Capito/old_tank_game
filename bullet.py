@@ -1,5 +1,6 @@
 import pygame
 
+from copy import deepcopy
 from pygame.sprite import Sprite
 
 
@@ -21,14 +22,7 @@ class Bullet(Sprite):
         self.color = self.settings.bullet_color
         self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)  # Создание снаряда в позиции (0,0) и назначение правильной позиции.
         self.__direction = TankState.direction
-        if self.__direction == 1:
-            self.rect.midtop = ot_game.tank.rect.midtop
-        elif self.__direction == 2:
-            self.rect.midright = ot_game.tank.rect.midright
-        elif self.__direction == 3:
-            self.rect.midbottom = ot_game.tank.rect.midbottom
-        elif self.__direction == 4:
-            self.rect.midleft = ot_game.tank.rect.midleft
+        self.__bullet_pos(ot_game)
         self.y = float(self.rect.y)  # Позиция снаряда хранится в виде десятичной дроби.
         self.x = float(self.rect.x)
 
@@ -52,3 +46,13 @@ class Bullet(Sprite):
         Вывод снаряда на экран.
         """
         pygame.draw.rect(self.screen, self.color, self.rect)
+
+    def __bullet_pos(self, ot_game):
+        if self.__direction == 1:
+            self.rect.midtop = ot_game.tank.rect.midtop
+        elif self.__direction == 2:
+            self.rect.midright = ot_game.tank.rect.midright
+        elif self.__direction == 3:
+            self.rect.midbottom = ot_game.tank.rect.midbottom
+        elif self.__direction == 4:
+            self.rect.midleft = ot_game.tank.rect.midleft
