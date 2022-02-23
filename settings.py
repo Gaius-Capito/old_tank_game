@@ -19,4 +19,6 @@ class Settings:
         self.bullet_color = (128, 0, 0)
         self.bullets_allowed = 7
 
+        # настройки вражеских танков
         self.enemy_number = 4
+        self.enemy_speed = 2

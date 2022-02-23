@@ -26,6 +26,7 @@ class OldTank:
             self._check_events()
             self.check_pressed_btns()
             self._update_bullets()
+            self._update_enemies()
             self._update_screen()
 
 
@@ -89,6 +90,13 @@ class OldTank:
             enemy = Enemy(self)
             self.enemies.add(enemy)
 
+    def _update_enemies(self):
+        """
+        Обновляет позиции вражеских танков.
+        """
+        for enemy in self.enemies:
+            enemy.update()
+
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)  # Цвет главного экрана
         self.tank.blitme()
@@ -102,3 +110,4 @@ class OldTank:
 if __name__ == '__main__':
     ot = OldTank()
     ot.run_game()
+
