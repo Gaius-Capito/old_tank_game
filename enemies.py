@@ -1,11 +1,8 @@
 import pygame
+import time
 
 from pygame.sprite import Sprite
 from random import randint
-import new
-from threading import Thread
-from random import randint
-import time
 
 
 class Enemy(Sprite):
@@ -24,8 +21,14 @@ class Enemy(Sprite):
         self.image = pygame.image.load('images/tank_black.png')
         self.image = pygame.transform.scale(self.image, (self.image.get_width() // 7, self.image.get_height() // 7))
         self.rect = self.image.get_rect()
+        self.image_t = pygame.transform.rotate(self.image, 0)
+        self.image_r = pygame.transform.rotate(self.image, 270)
+        self.image_b = pygame.transform.rotate(self.image, 180)
+        self.image_l = pygame.transform.rotate(self.image, 90)
 
         # Каждый новый вражеский танк появляется в случайном месте.
+        self._dir = randint(1, 4)
+        self.__time_move = time.time() + randint(1, 5)
         self.rect.x = randint(self.rect.width, (self.screen.get_rect().right - self.rect.width))
         self.rect.y = randint(self.rect.height, (self.screen.get_rect().bottom - self.rect.height))
 
@@ -37,14 +40,28 @@ class Enemy(Sprite):
         """
         Перемещает танки.
         """
-        x = new.dir
-        if x == 1:
+        if time.time() > self.__time_move:
+            self._dir = randint(1, 4)
+            self.__time_move = time.time() + randint(1, 5)
+        if self.rect.bottom >= self.screen.get_rect().bottom:
+            self._dir = 4
+        if self.rect.y <= 0:
+            self._dir = 2
+        if self.rect.right >= self.screen.get_rect().right:
+            self._dir = 3
+        if self.rect.x <= 0:
+            self._dir = 1
+        if self._dir == 1:
             self.x += self.settings.enemy_speed
-        elif x == 3:
+            self.image = self.image_r
+        elif self._dir == 3:
             self.x -= self.settings.enemy_speed
-        elif x == 2:
+            self.image = self.image_l
+        elif self._dir == 2:
             self.y += self.settings.enemy_speed
-        elif x == 4:
+            self.image = self.image_b
+        elif self._dir == 4:
             self.y -= self.settings.enemy_speed
+            self.image = self.image_t
         self.rect.y = self.y
         self.rect.x = self.x

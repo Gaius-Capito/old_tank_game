@@ -1,4 +1,3 @@
-import pygame.transform
 
 
 class Settings:
@@ -21,4 +20,4 @@ class Settings:
 
         # настройки вражеских танков
         self.enemy_number = 4
-        self.enemy_speed = 2
+        self.enemy_speed = 4

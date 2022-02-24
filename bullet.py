@@ -1,11 +1,11 @@
 import pygame
 
-from copy import deepcopy
 from pygame.sprite import Sprite
 
 
 class TankState:
     direction = 1
+
 
 class Bullet(Sprite):
     """

@@ -82,6 +82,11 @@ class OldTank:
                     or bullet.rect.left >= self.screen.get_rect().right or bullet.rect.right <= 0):
                 self.bullets.remove(bullet)
 
+        # Проверка попаданий в противника.
+        # При обнаружении попадания удалить снаряд и вражеский танк.
+        collisions = pygame.sprite.groupcollide(
+            self.bullets, self.enemies, True, True)
+
     def _create_enemies(self):
         """
         Создание танков противника.
