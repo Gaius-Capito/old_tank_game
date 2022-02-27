@@ -13,10 +13,12 @@ class Settings:
 
         # настройки снаряда
         self.bullet_speed = 15
+        self.enemy_bullet_speed = 11
         self.bullet_width = 5
         self.bullet_height = 5
         self.bullet_color = (128, 0, 0)
-        self.bullets_allowed = 7
+        self.enemy_bullet_color = (128, 0, 128)
+        self.bullets_allowed = 5
 
         # настройки вражеских танков
         self.enemy_number = 4

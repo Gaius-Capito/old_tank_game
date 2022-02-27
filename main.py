@@ -3,7 +3,7 @@ import pygame
 
 from settings import Settings
 from tank import Tank
-from bullet import Bullet, TankState
+from bullet import Bullet, EnemyBullet, TankState
 from enemies import Enemy
 
 
@@ -16,6 +16,7 @@ class OldTank:
         self.tank = Tank(self)
         self.bullets = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
+        self.enemy_bullets = pygame.sprite.Group()
         self.clock = pygame.time.Clock()
         self._create_enemies()
         pygame.display.set_caption("Old Tank")
@@ -27,6 +28,7 @@ class OldTank:
             self.check_pressed_btns()
             self._update_bullets()
             self._update_enemies()
+            self._update_enemy_bullets()
             self._update_screen()
 
 
@@ -37,6 +39,7 @@ class OldTank:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     self._fire_bullet()
+                    self._enemy_fire_bullet()
                 elif event.key == pygame.K_ESCAPE:
                     sys.exit()
 
@@ -69,6 +72,14 @@ class OldTank:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
+    def _enemy_fire_bullet(self):
+        """
+        Создание снарядов противника и добавление в 'pygame.sprite.Group()'.
+        """
+        if len(self.enemy_bullets) < self.settings.bullets_allowed:
+            new_bullet = EnemyBullet(self)
+            self.enemy_bullets.add(new_bullet)
+
     def _update_bullets(self):
         """
         Обновление позиции снаряда и удаление снарядов за краем окна.
@@ -87,11 +98,24 @@ class OldTank:
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.enemies, True, True)
 
+    def _update_enemy_bullets(self):
+        """
+        Обновление позиции снаряда противника и удаление снарядов за краем окна.
+        """
+        # Обновление позиции снаряда.
+        self.enemy_bullets.update()
+
+        # Удаление снарядов за краем окна.
+        for bullet in self.enemy_bullets.copy():
+            if (bullet.rect.bottom <= 0 or bullet.rect.top >= self.screen.get_rect().bottom
+                    or bullet.rect.left >= self.screen.get_rect().right or bullet.rect.right <= 0):
+                self.enemy_bullets.remove(bullet)
+
     def _create_enemies(self):
         """
         Создание танков противника.
         """
-        for enemy_number in range(self.settings.enemy_number):
+        for _ in range(self.settings.enemy_number):
             enemy = Enemy(self)
             self.enemies.add(enemy)
 
@@ -99,8 +123,8 @@ class OldTank:
         """
         Обновляет позиции вражеских танков.
         """
-        for enemy in self.enemies:
-            enemy.update()
+        for self.enemy in self.enemies:
+            self.enemy.update()
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)  # Цвет главного экрана
@@ -108,6 +132,8 @@ class OldTank:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.enemies.draw(self.screen)
+        for bullet in self.enemy_bullets.sprites():
+            bullet.draw_bullet()
 
         pygame.display.flip()  # Отображение экрана.
 

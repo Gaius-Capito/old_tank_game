@@ -3,6 +3,7 @@ import time
 
 from pygame.sprite import Sprite
 from random import randint
+from bullet import EnemyState
 
 
 class Enemy(Sprite):
@@ -44,24 +45,25 @@ class Enemy(Sprite):
             self._dir = randint(1, 4)
             self.__time_move = time.time() + randint(1, 5)
         if self.rect.bottom >= self.screen.get_rect().bottom:
-            self._dir = 4
-        if self.rect.y <= 0:
-            self._dir = 2
-        if self.rect.right >= self.screen.get_rect().right:
-            self._dir = 3
-        if self.rect.x <= 0:
             self._dir = 1
-        if self._dir == 1:
+        if self.rect.y <= 0:
+            self._dir = 3
+        if self.rect.right >= self.screen.get_rect().right:
+            self._dir = 4
+        if self.rect.x <= 0:
+            self._dir = 2
+        if self._dir == 2:
             self.x += self.settings.enemy_speed
             self.image = self.image_r
-        elif self._dir == 3:
+        elif self._dir == 4:
             self.x -= self.settings.enemy_speed
             self.image = self.image_l
-        elif self._dir == 2:
+        elif self._dir == 3:
             self.y += self.settings.enemy_speed
             self.image = self.image_b
-        elif self._dir == 4:
+        elif self._dir == 1:
             self.y -= self.settings.enemy_speed
             self.image = self.image_t
+        EnemyState.direction = self._dir
         self.rect.y = self.y
         self.rect.x = self.x
