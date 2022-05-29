@@ -63,13 +63,13 @@ class OldTank:
             self._update_screen()
 
     def _check_events(self):
-        if time.time() > self.__time_fire:
+        if time.time() > self.__time_fire and self.enemies:
             self._enemy_fire_bullet()
-        if time.time() > self.__time_fire2:
+        if time.time() > self.__time_fire2 and self.enemies:
             self._enemy_fire_bullet2()
-        if time.time() > self.__time_fire3:
+        if time.time() > self.__time_fire3 and self.enemies:
             self._enemy_fire_bullet3()
-        if time.time() > self.__time_fire4:
+        if time.time() > self.__time_fire4 and self.enemies4:
             self._enemy_fire_bullet4()
         for event in pygame.event.get():  # Отслеживание событий клавиатуры и мыши.
             if event.type == pygame.QUIT:
