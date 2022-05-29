@@ -20,7 +20,7 @@ class Tank:
         self.tank_img_l = pygame.transform.rotate(self.image, 90)
         self.tank_img_t = pygame.transform.rotate(self.image, 0)
         self.rect = self.image.get_rect()
-        self.rect.midbottom = self.screen_rect.midbottom  # Каждый новый танк появляется у нижнего края экрана.
+        self.rect.midbottom = self.screen_rect.midbottom  # Танк появляется у нижнего края экрана.
 
     def blitme(self):
         """
