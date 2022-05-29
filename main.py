@@ -65,9 +65,9 @@ class OldTank:
     def _check_events(self):
         if time.time() > self.__time_fire and self.enemies:
             self._enemy_fire_bullet()
-        if time.time() > self.__time_fire2 and self.enemies:
+        if time.time() > self.__time_fire2 and self.enemies2:
             self._enemy_fire_bullet2()
-        if time.time() > self.__time_fire3 and self.enemies:
+        if time.time() > self.__time_fire3 and self.enemies3:
             self._enemy_fire_bullet3()
         if time.time() > self.__time_fire4 and self.enemies4:
             self._enemy_fire_bullet4()
@@ -77,7 +77,6 @@ class OldTank:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     self._fire_bullet()
-
                 elif event.key == pygame.K_ESCAPE:
                     sys.exit()
 
