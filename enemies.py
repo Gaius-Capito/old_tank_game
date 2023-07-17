@@ -95,19 +95,9 @@ class Enemy(Sprite):
 
     def change_direction(self, player_rect):
         """
-        Изменяет движение вражеского танка при столкновении с таким же танком
-        (спрайтом).
-        """
-        available_directions = [1, 2, 3, 4]
-        opposite_direction = self.get_opposite_direction()
-        available_directions.remove(opposite_direction)
-        direction = random.choice(available_directions)
-        self._dir = direction
-
-    def get_opposite_direction(self):
-        """
-        Задает направление движения при столкновении, противоположное тому,
-        куда раньше двигался танк
+        Изменяет направление движения вражеского
+        танка при столкновении с другим танком.
         """
         opposite_directions = {1: 3, 2: 4, 3: 1, 4: 2}
-        return opposite_directions[self._dir]
+        direction = opposite_directions[self._dir]
+        self._dir = direction

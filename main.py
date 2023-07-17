@@ -127,8 +127,13 @@ class OldTank:
         """
         Создание танков противника.
         """
-        for _ in range(6):
+        for _ in range(15):
             enemy = Enemy(self)
+
+            # Проверка на пересечение с другими танками
+            while pygame.sprite.spritecollide(enemy, self.enemies, False):
+                enemy = Enemy(self)
+
             self.enemies.add(enemy)
 
     def _update_enemies(self):
