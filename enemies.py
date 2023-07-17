@@ -67,3 +67,9 @@ class Enemy(Sprite):
         EnemyState.direction = self._dir
         self.rect.y = self.y
         self.rect.x = self.x
+
+    def get_rect(self):
+        """
+        Возвращает прямоугольник rect вражеского танка.
+        """
+        return self.rect

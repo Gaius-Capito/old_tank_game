@@ -1,5 +1,4 @@
 import pygame
-
 from pygame.sprite import Sprite
 
 
@@ -23,10 +22,10 @@ class Bullet(Sprite):
         self.screen = ot_game.screen
         self.settings = ot_game.settings
         self.color = self.settings.bullet_color
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)  # Создание снаряда в позиции (0,0) и назначение правильной позиции.
+        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)
         self.__direction = TankState.direction
         self.__bullet_pos(ot_game)
-        self.y = float(self.rect.y)  # Позиция снаряда хранится в виде десятичной дроби.
+        self.y = float(self.rect.y)
         self.x = float(self.rect.x)
 
     def update(self):
@@ -34,7 +33,7 @@ class Bullet(Sprite):
         Перемещает снаряд по экрану.
         """
         if self.__direction == 1:
-            self.y -= self.settings.bullet_speed  # Обновление позиции снаряда.
+            self.y -= self.settings.bullet_speed
         elif self.__direction == 2:
             self.x += self.settings.bullet_speed
         elif self.__direction == 3:
@@ -65,7 +64,7 @@ class EnemyBullet(Sprite):
     """
     Класс для управления снарядами, выпущенными танком
     """
-    def __init__(self, ot_game):
+    def __init__(self, ot_game, enemy_rect):
         """
         Создает объект снарядов в текущей позиции танка
         """
@@ -73,10 +72,10 @@ class EnemyBullet(Sprite):
         self.screen = ot_game.screen
         self.settings = ot_game.settings
         self.color = self.settings.enemy_bullet_color
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)  # Создание снаряда в позиции (0,0) и назначение правильной позиции.
+        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)
         self.__direction = EnemyState.direction
-        self.__bullet_pos(ot_game)
-        self.y = float(self.rect.y)  # Позиция снаряда хранится в виде десятичной дроби.
+        self.__bullet_pos(enemy_rect)
+        self.y = float(self.rect.y)
         self.x = float(self.rect.x)
 
     def update(self):
@@ -84,7 +83,7 @@ class EnemyBullet(Sprite):
         Перемещает снаряд по экрану.
         """
         if self.__direction == 1:
-            self.y -= self.settings.enemy_bullet_speed  # Обновление позиции снаряда.
+            self.y -= self.settings.enemy_bullet_speed
         elif self.__direction == 2:
             self.x += self.settings.enemy_bullet_speed
         elif self.__direction == 3:
@@ -100,12 +99,12 @@ class EnemyBullet(Sprite):
         """
         pygame.draw.rect(self.screen, self.color, self.rect)
 
-    def __bullet_pos(self, ot_game):
+    def __bullet_pos(self, enemy_rect):
         if self.__direction == 1:
-            self.rect.midtop = ot_game.enemy_rect[0].rect.midtop
+            self.rect.midtop = enemy_rect.midtop
         elif self.__direction == 2:
-            self.rect.midright = ot_game.enemy_rect[0].rect.midright
+            self.rect.midright = enemy_rect.midright
         elif self.__direction == 3:
-            self.rect.midbottom = ot_game.enemy_rect[0].rect.midbottom
+            self.rect.midbottom = enemy_rect.midbottom
         elif self.__direction == 4:
-            self.rect.midleft = ot_game.enemy_rect[0].rect.midleft
+            self.rect.midleft = enemy_rect.midleft

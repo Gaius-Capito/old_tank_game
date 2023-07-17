@@ -33,6 +33,7 @@ class OldTank:
             self.check_pressed_btns()
             self._update_bullets()
             self._update_enemies()
+            self._check_enemy_collisions()  # Проверка попаданий вражеских танков
             self._update_enemy_bullets()
             self._update_screen()
 
@@ -83,7 +84,9 @@ class OldTank:
         Создание снарядов противника и добавление в 'pygame.sprite.Group()'.
         """
         if len(self.enemy_bullets) < self.settings.enemy_bullets_allowed:
-            new_bullet = EnemyBullet(self)
+            if self.enemies:
+                new_bullet = EnemyBullet(self,
+                                         self.enemies.sprites()[0].get_rect())
             self.enemy_bullets.add(new_bullet)
 
     def _update_bullets(self):
@@ -121,7 +124,7 @@ class OldTank:
         """
         Создание танков противника.
         """
-        for _ in range(1):
+        for _ in range(4):
             enemy = Enemy(self)
             self.enemies.add(enemy)
 
@@ -129,10 +132,17 @@ class OldTank:
         """
         Обновляет позиции вражеских танков.
         """
-        for i in self.enemies:
-            self.enemy_rect.append(i)
-        for enemy in self.enemies:
-            enemy.update()
+        self.enemies.update()
+
+    def _check_enemy_collisions(self):
+        """
+        Проверяет попадания вражеских танков и удаляет их при попадании.
+        """
+        collisions = pygame.sprite.groupcollide(self.bullets, self.enemies,
+                                                True, True)
+        for bullets, enemies in collisions.items():
+            for enemy in enemies:
+                self.enemies.remove(enemy)
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)  # Цвет главного экрана
