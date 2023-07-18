@@ -3,7 +3,7 @@ import random
 import time
 
 from pygame.sprite import Sprite
-from bullet import EnemyState
+from bullet import EnemyState, EnemyBullet
 
 
 class Enemy(Sprite):
@@ -15,6 +15,7 @@ class Enemy(Sprite):
         Инициализирует вражеский танк и задает его начальную позицию.
         """
         super().__init__()
+        self.ot_game = ot_game
         self.screen = ot_game.screen
         self.settings = ot_game.settings
 
@@ -46,6 +47,8 @@ class Enemy(Sprite):
         # Сохранение точной позиции танка.
         self.x = float(self.rect.x)
         self.y = float(self.rect.y)
+
+        self._fire_time = time.time() + random.uniform(1, 4)
 
     def update(self):
         """
@@ -83,6 +86,13 @@ class Enemy(Sprite):
         Возвращает прямоугольник rect вражеского танка.
         """
         return self.rect
+
+    def _fire_bullet(self):
+        """
+        Создание снаряда для вражеского танка и добавление в 'pygame.sprite.Group()'.
+        """
+        bullet = EnemyBullet(self.ot_game, self.rect)
+        self.ot_game.enemy_bullets.add(bullet)
 
     def _check_collision(self, enemies):
         """

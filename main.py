@@ -1,6 +1,8 @@
+import pygame
+import random
 import sys
 import time
-import pygame
+
 
 from random import randint
 from settings import Settings
@@ -41,6 +43,12 @@ class OldTank:
             self._update_screen()
 
     def _check_events(self):
+        current_time = time.time()
+        for enemy in self.enemies:
+            if current_time > enemy._fire_time:
+                enemy._fire_bullet()
+                enemy._fire_time = current_time + random.uniform(1, 4)
+
         if time.time() > self.__time_fire and self.enemies:
             self._enemy_fire_bullet()
 
