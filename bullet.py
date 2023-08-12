@@ -62,7 +62,7 @@ class Bullet(Sprite):
 
 class EnemyBullet(Sprite):
     """
-    Класс для управления снарядами, выпущенными танком
+    Класс для управления снарядами, выпущенными танком противника
     """
     def __init__(self, ot_game, enemy_rect):
         """

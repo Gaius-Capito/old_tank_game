@@ -38,6 +38,7 @@ class OldTank:
             self._update_bullets()
             self._update_enemies()
             self._check_hits()  # Проверка попаданий вражеских танков
+            self._check_player_hits()
             self._check_enemy_collisions()
             self._update_enemy_bullets()
             self._update_screen()
@@ -135,7 +136,7 @@ class OldTank:
         """
         Создание танков противника.
         """
-        for _ in range(15):
+        for _ in range(self.settings.enemy_number):
             enemy = Enemy(self)
 
             # Проверка на пересечение с другими танками
@@ -152,13 +153,26 @@ class OldTank:
 
     def _check_hits(self):
         """
-        Проверяет попадания вражеских танков и удаляет их при попадании.
+        Проверяет попадания во вражеские вражеских танков и удаляет их при попадании.
         """
         collisions = pygame.sprite.groupcollide(self.bullets, self.enemies,
                                                 True, True)
         for bullets, enemies in collisions.items():
             for enemy in enemies:
                 self.enemies.remove(enemy)
+
+    def _check_player_hits(self):
+        """
+        Проверяет попадания в танк игрока и управляет жизнями и флагом живости.
+        """
+        for bullet in self.enemy_bullets:
+            if bullet.rect.colliderect(self.tank.rect):
+                self.tank.lives -= 1
+                if self.tank.lives <= 0:
+                    self.tank.alive = False
+                self.enemy_bullets.remove(bullet)
+                break  # Выход из цикла после первого попадания
+
 
     def _check_enemy_collisions(self):
         for enemy in self.enemies:
@@ -167,12 +181,24 @@ class OldTank:
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)  # Цвет главного экрана
-        self.tank.blitme()
-        for bullet in self.bullets.sprites():
-            bullet.draw_bullet()
-        self.enemies.draw(self.screen)
-        for bullet in self.enemy_bullets.sprites():
-            bullet.draw_bullet()
+
+        if self.tank.alive:
+            self.tank.blitme()
+            for bullet in self.bullets.sprites():
+                bullet.draw_bullet()
+            self.enemies.draw(self.screen)
+            for bullet in self.enemy_bullets.sprites():
+                bullet.draw_bullet()
+
+            lives_text = self.settings.font.render(f"Lives: {self.tank.lives}",
+                                                   True, (255, 255, 255))
+            self.screen.blit(lives_text, (10, 10))
+        else:
+            game_over_text = self.settings.font.render("Game Over", True,
+                                                       (255, 0, 0))
+            self.screen.blit(game_over_text, (
+            self.settings.screen_width // 2 - 50,
+            self.settings.screen_height // 2))
 
         pygame.display.flip()  # Отображение экрана.
 

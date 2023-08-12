@@ -21,6 +21,8 @@ class Tank:
         self.tank_img_t = pygame.transform.rotate(self.image, 0)
         self.rect = self.image.get_rect()
         self.rect.midbottom = self.screen_rect.midbottom  # Танк появляется у нижнего края экрана.
+        self.lives = 3  # Начальное количество жизней
+        self.alive = True  # Флаг, показывающий, жив ли танк
 
     def blitme(self):
         """

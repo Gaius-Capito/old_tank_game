@@ -1,3 +1,4 @@
+import pygame
 
 
 class Settings:
@@ -10,6 +11,7 @@ class Settings:
         self.FPS = 10
         self.bg_color = (192, 192, 192)
         self.tank_speed = 5
+        self.font = pygame.font.Font('font/d9464-arkhip_font.ttf', 14)
 
         # настройки снаряда
         self.bullet_speed = 15
@@ -22,5 +24,5 @@ class Settings:
         self.enemy_bullets_allowed = 1
 
         # настройки вражеских танков
-        # self.enemy_number = 1
+        self.enemy_number = 8
         self.enemy_speed = 4
