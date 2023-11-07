@@ -1,28 +1,28 @@
-import pygame
+from dataclasses import dataclass
 
 
+@dataclass
 class Settings:
     """
     Класс для хранения настроек игры Old Tank
     """
-    def __init__(self):
-        self.screen_width = 1200
-        self.screen_height = 800
-        self.FPS = 10
-        self.bg_color = (192, 192, 192)
-        self.tank_speed = 5
-        self.font = pygame.font.Font('font/d9464-arkhip_font.ttf', 14)
+    screen_width: int = 1200
+    screen_height: int = 800
+    FPS: int = 10
+    bg_color: tuple = (192, 192, 192)
+    tank_speed: int = 5
+    font_path: str = 'font/d9464-arkhip_font.ttf'
 
-        # настройки снаряда
-        self.bullet_speed = 15
-        self.enemy_bullet_speed = 11
-        self.bullet_width = 5
-        self.bullet_height = 5
-        self.bullet_color = (128, 0, 0)
-        self.enemy_bullet_color = (128, 0, 128)
-        self.bullets_allowed = 4
-        self.enemy_bullets_allowed = 1
+    # настройки снаряда
+    bullet_speed: int = 15
+    enemy_bullet_speed: int = 11
+    bullet_width: int = 5
+    bullet_height: int = 5
+    bullet_color: tuple = (128, 0, 0)
+    enemy_bullet_color: tuple = (128, 0, 128)
+    bullets_allowed: int = 4
+    enemy_bullets_allowed: int = 1
 
-        # настройки вражеских танков
-        self.enemy_number = 8
-        self.enemy_speed = 4
+    # настройки вражеских танков
+    enemy_number: int = 8
+    enemy_speed: int = 4

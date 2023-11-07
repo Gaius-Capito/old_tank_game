@@ -3,12 +3,12 @@ import random
 import sys
 import time
 
-
+from bullet import Bullet, EnemyBullet, TankState
+from enemies import Enemy
+from menu import Menu
 from random import randint
 from settings import Settings
 from tank import Tank
-from bullet import Bullet, EnemyBullet, TankState
-from enemies import Enemy
 
 
 class OldTank:
@@ -27,6 +27,7 @@ class OldTank:
         self.enemy_bullets = pygame.sprite.Group()
         self.clock = pygame.time.Clock()
         self._create_enemies()
+        self.font = pygame.font.Font(self.settings.font_path, 14)
 
         pygame.display.set_caption("Old Tank")
 
@@ -64,7 +65,9 @@ class OldTank:
 
     def check_pressed_btns(self):
         button = pygame.key.get_pressed()
-        if button[pygame.K_d] and self.tank.rect.right < (self.tank.screen_rect.right + 50):
+        if button[pygame.K_d] and self.tank.rect.right < (
+                self.tank.screen_rect.right + 50
+        ):
             self.tank.image = self.tank.tank_img_r
             self.tank.rect.x += self.settings.tank_speed
             TankState.direction = 2
@@ -76,7 +79,8 @@ class OldTank:
             TankState.direction = 1
             self.tank.image = self.tank.tank_img_t
             self.tank.rect.y -= self.settings.tank_speed
-        elif button[pygame.K_s] and self.tank.rect.bottom < self.tank.screen_rect.bottom:
+        elif (button[pygame.K_s] and self.tank.rect.bottom <
+              self.tank.screen_rect.bottom):
             self.tank.image = self.tank.tank_img_b
             self.tank.rect.y += self.settings.tank_speed
             TankState.direction = 3
@@ -110,8 +114,12 @@ class OldTank:
 
         # Удаление снарядов за краем окна.
         for bullet in self.bullets.copy():
-            if (bullet.rect.bottom <= 0 or bullet.rect.top >= self.screen.get_rect().bottom
-                    or bullet.rect.left >= self.screen.get_rect().right or bullet.rect.right <= 0):
+            if (
+                    bullet.rect.bottom <= 0 or
+                    bullet.rect.top >= self.screen.get_rect().bottom or
+                    bullet.rect.left >= self.screen.get_rect().right or
+                    bullet.rect.right <= 0
+            ):
                 self.bullets.remove(bullet)
 
         # Проверка попаданий в противника.
@@ -121,15 +129,20 @@ class OldTank:
 
     def _update_enemy_bullets(self):
         """
-        Обновление позиции снаряда противника и удаление снарядов за краем окна.
+        Обновление позиции снаряда противника и удаление
+        снарядов за краем окна.
         """
         # Обновление позиции снаряда.
         self.enemy_bullets.update()
 
         # Удаление снарядов за краем окна.
         for bullet in self.enemy_bullets.copy():
-            if (bullet.rect.bottom <= 0 or bullet.rect.top >= self.screen.get_rect().bottom
-                    or bullet.rect.left >= self.screen.get_rect().right or bullet.rect.right <= 0):
+            if (
+                    bullet.rect.bottom <= 0 or
+                    bullet.rect.top >= self.screen.get_rect().bottom or
+                    bullet.rect.left >= self.screen.get_rect().right or
+                    bullet.rect.right <= 0
+            ):
                 self.enemy_bullets.remove(bullet)
 
     def _create_enemies(self):
@@ -153,7 +166,8 @@ class OldTank:
 
     def _check_hits(self):
         """
-        Проверяет попадания во вражеские вражеских танков и удаляет их при попадании.
+        Проверяет попадания во вражеские вражеских
+        танков и удаляет их при попадании.
         """
         collisions = pygame.sprite.groupcollide(self.bullets, self.enemies,
                                                 True, True)
@@ -190,12 +204,18 @@ class OldTank:
             for bullet in self.enemy_bullets.sprites():
                 bullet.draw_bullet()
 
-            lives_text = self.settings.font.render(f"Lives: {self.tank.lives}",
-                                                   True, (255, 255, 255))
+            lives_text = self.font.render(
+                f"Lives: {self.tank.lives}",
+                True,
+                (255, 255, 255)
+            )
             self.screen.blit(lives_text, (10, 10))
         else:
-            game_over_text = self.settings.font.render("Game Over", True,
-                                                       (255, 0, 0))
+            game_over_text = self.font.render(
+                "Game Over",
+                True,
+                (255, 0, 0)
+            )
             self.screen.blit(game_over_text, (
             self.settings.screen_width // 2 - 50,
             self.settings.screen_height // 2))
@@ -205,4 +225,10 @@ class OldTank:
 
 if __name__ == '__main__':
     ot = OldTank()
+    menu = Menu(ot.screen, ot.settings)
+
+    # Отображение меню
+    menu.show_menu()
+
+    # Запуск игры
     ot.run_game()
