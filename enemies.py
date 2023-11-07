@@ -89,7 +89,8 @@ class Enemy(Sprite):
 
     def _fire_bullet(self):
         """
-        Создание снаряда для вражеского танка и добавление в 'pygame.sprite.Group()'.
+        Создание снаряда для вражеского танка и
+        добавление в 'pygame.sprite.Group()'.
         """
         bullet = EnemyBullet(self.ot_game, self.rect)
         self.ot_game.enemy_bullets.add(bullet)

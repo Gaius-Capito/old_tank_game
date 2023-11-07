@@ -14,7 +14,11 @@ class Tank:
         self.settings = ot_game.settings
         self.screen_rect = ot_game.screen.get_rect()  # Координаты края экрана
         self.image = pygame.image.load('images/tank_green.png')  # Загружает изображение танка
-        self.image = pygame.transform.scale(self.image, (self.image.get_width() // 7, self.image.get_height() // 7))
+        self.image = pygame.transform.scale(self.image,
+                                            (
+                                                self.image.get_width() // 7,
+                                                self.image.get_height() // 7)
+                                            )
         self.tank_img_r = pygame.transform.rotate(self.image, 270)
         self.tank_img_b = pygame.transform.rotate(self.image, 180)
         self.tank_img_l = pygame.transform.rotate(self.image, 90)

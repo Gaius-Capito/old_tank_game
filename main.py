@@ -187,7 +187,6 @@ class OldTank:
                 self.enemy_bullets.remove(bullet)
                 break  # Выход из цикла после первого попадания
 
-
     def _check_enemy_collisions(self):
         for enemy in self.enemies:
             if enemy._check_collision(self.enemies):

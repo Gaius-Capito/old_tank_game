@@ -22,7 +22,8 @@ class Bullet(Sprite):
         self.screen = ot_game.screen
         self.settings = ot_game.settings
         self.color = self.settings.bullet_color
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)
+        self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
+                                self.settings.bullet_height)
         self.__direction = TankState.direction
         self.__bullet_pos(ot_game)
         self.y = float(self.rect.y)
@@ -72,7 +73,8 @@ class EnemyBullet(Sprite):
         self.screen = ot_game.screen
         self.settings = ot_game.settings
         self.color = self.settings.enemy_bullet_color
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)
+        self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
+                                self.settings.bullet_height)
         self.__direction = EnemyState.direction
         self.__bullet_pos(enemy_rect)
         self.y = float(self.rect.y)
