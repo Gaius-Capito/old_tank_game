@@ -92,7 +92,7 @@ class Enemy(Sprite):
         Создание снаряда для вражеского танка и
         добавление в 'pygame.sprite.Group()'.
         """
-        bullet = EnemyBullet(self.ot_game, self.rect)
+        bullet = EnemyBullet(self.ot_game, self.rect, self._dir)
         self.ot_game.enemy_bullets.add(bullet)
 
     def _check_collision(self, enemies):
@@ -112,3 +112,9 @@ class Enemy(Sprite):
         opposite_directions = {1: 3, 2: 4, 3: 1, 4: 2}
         direction = opposite_directions[self._dir]
         self._dir = direction
+
+    def get_direction(self):
+        """
+        Возвращает текущее направление вражеского танка.
+        """
+        return self._dir

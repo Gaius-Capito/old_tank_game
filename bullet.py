@@ -65,7 +65,8 @@ class EnemyBullet(Sprite):
     """
     Класс для управления снарядами, выпущенными танком противника
     """
-    def __init__(self, ot_game, enemy_rect):
+
+    def __init__(self, ot_game, enemy_rect, direction):
         """
         Создает объект снарядов в текущей позиции танка
         """
@@ -75,8 +76,8 @@ class EnemyBullet(Sprite):
         self.color = self.settings.enemy_bullet_color
         self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
                                 self.settings.bullet_height)
-        self.__direction = EnemyState.direction
-        self.__bullet_pos(enemy_rect)
+        self.__direction = direction  # Используем переданное направление
+        self.__bullet_position(enemy_rect)
         self.y = float(self.rect.y)
         self.x = float(self.rect.x)
 
@@ -101,7 +102,11 @@ class EnemyBullet(Sprite):
         """
         pygame.draw.rect(self.screen, self.color, self.rect)
 
-    def __bullet_pos(self, enemy_rect):
+    def __bullet_position(self, enemy_rect):
+        """
+        Устанавливает начальные координаты снаряда в соответствии
+        с направлением танка противника и конкретными координатами дула танка.
+        """
         if self.__direction == 1:
             self.rect.midtop = enemy_rect.midtop
         elif self.__direction == 2:
@@ -110,3 +115,4 @@ class EnemyBullet(Sprite):
             self.rect.midbottom = enemy_rect.midbottom
         elif self.__direction == 4:
             self.rect.midleft = enemy_rect.midleft
+

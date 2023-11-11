@@ -102,7 +102,9 @@ class OldTank:
         if len(self.enemy_bullets) < self.settings.enemy_bullets_allowed:
             if self.enemies:
                 new_bullet = EnemyBullet(self,
-                                         self.enemies.sprites()[0].get_rect())
+                                         self.enemies.sprites()[0].get_rect(),
+                                         self.enemies.sprites()[
+                                             0].get_direction())
             self.enemy_bullets.add(new_bullet)
 
     def _update_bullets(self):
