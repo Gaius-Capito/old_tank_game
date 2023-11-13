@@ -33,7 +33,7 @@ class Enemy(Sprite):
         self.image_l = pygame.transform.rotate(self.image, 90)
 
         # Каждый новый вражеский танк появляется в случайном месте.
-        self._dir = random.randint(1, 4)
+        self._direction = random.randint(1, 4)
         self.__time_move = time.time() + random.randint(1, 5)
         self.rect.x = random.randint(
             self.rect.width, (self.screen.get_rect().right - self.rect.width)
@@ -55,29 +55,29 @@ class Enemy(Sprite):
         Перемещает танки.
         """
         if time.time() > self.__time_move:
-            self._dir = random.randint(1, 4)
+            self._direction = random.randint(1, 4)
             self.__time_move = time.time() + random.randint(1, 5)
         if self.rect.bottom >= self.screen.get_rect().bottom:
-            self._dir = 1
+            self._direction = 1
         if self.rect.y <= 0:
-            self._dir = 3
+            self._direction = 3
         if self.rect.right >= self.screen.get_rect().right:
-            self._dir = 4
+            self._direction = 4
         if self.rect.x <= 0:
-            self._dir = 2
-        if self._dir == 2:
+            self._direction = 2
+        if self._direction == 2:
             self.x += self.settings.enemy_speed
             self.image = self.image_r
-        elif self._dir == 4:
+        elif self._direction == 4:
             self.x -= self.settings.enemy_speed
             self.image = self.image_l
-        elif self._dir == 3:
+        elif self._direction == 3:
             self.y += self.settings.enemy_speed
             self.image = self.image_b
-        elif self._dir == 1:
+        elif self._direction == 1:
             self.y -= self.settings.enemy_speed
             self.image = self.image_t
-        EnemyState.direction = self._dir
+        EnemyState.direction = self._direction
         self.rect.y = self.y
         self.rect.x = self.x
 
@@ -92,7 +92,7 @@ class Enemy(Sprite):
         Создание снаряда для вражеского танка и
         добавление в 'pygame.sprite.Group()'.
         """
-        bullet = EnemyBullet(self.ot_game, self.rect, self._dir)
+        bullet = EnemyBullet(self.ot_game, self.rect, self._direction)
         self.ot_game.enemy_bullets.add(bullet)
 
     def _check_collision(self, enemies):
@@ -110,11 +110,11 @@ class Enemy(Sprite):
         танка при столкновении с другим танком.
         """
         opposite_directions = {1: 3, 2: 4, 3: 1, 4: 2}
-        direction = opposite_directions[self._dir]
-        self._dir = direction
+        direction = opposite_directions[self._direction]
+        self._direction = direction
 
     def get_direction(self):
         """
         Возвращает текущее направление вражеского танка.
         """
-        return self._dir
+        return self._direction

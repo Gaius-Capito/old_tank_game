@@ -4,6 +4,7 @@ import sys
 import time
 
 from bullet import Bullet, EnemyBullet, TankState
+from buttons import ButtonToMenu
 from enemies import Enemy
 from menu import Menu
 from random import randint
@@ -28,8 +29,15 @@ class OldTank:
         self.clock = pygame.time.Clock()
         self._create_enemies()
         self.font = pygame.font.Font(self.settings.font_path, 14)
+        self.game_end_font = pygame.font.Font(self.settings.font_path, 25)
 
         pygame.display.set_caption("Old Tank")
+
+        self.menu_button = ButtonToMenu(
+            self.screen,
+            self.return_to_menu,
+            self.settings
+        )
 
     def run_game(self):
         while True:
@@ -41,6 +49,7 @@ class OldTank:
             self._check_hits()  # Проверка попаданий вражеских танков
             self._check_player_hits()
             self._check_enemy_collisions()
+            self._check_enemy_player_collisions()
             self._update_enemy_bullets()
             self._update_screen()
 
@@ -62,6 +71,7 @@ class OldTank:
                     self._fire_bullet()
                 elif event.key == pygame.K_ESCAPE:
                     sys.exit()
+            self.menu_button.handle_event(event)
 
     def check_pressed_btns(self):
         button = pygame.key.get_pressed()
@@ -155,7 +165,8 @@ class OldTank:
             enemy = Enemy(self)
 
             # Проверка на пересечение с другими танками
-            while pygame.sprite.spritecollide(enemy, self.enemies, False):
+            while (pygame.sprite.spritecollide(enemy, self.enemies, False) or
+                    enemy.rect.colliderect(self.tank.rect)):
                 enemy = Enemy(self)
 
             self.enemies.add(enemy)
@@ -184,15 +195,51 @@ class OldTank:
         for bullet in self.enemy_bullets:
             if bullet.rect.colliderect(self.tank.rect):
                 self.tank.lives -= 1
-                if self.tank.lives <= 0:
-                    self.tank.alive = False
+                self._check_player_alive() # Установить alive = False
                 self.enemy_bullets.remove(bullet)
                 break  # Выход из цикла после первого попадания
 
     def _check_enemy_collisions(self):
+        """
+        Проверяет столкновения танков противника друг с другом и меняет
+        направление движения в случае пересечения.
+        """
         for enemy in self.enemies:
             if enemy._check_collision(self.enemies):
                 enemy.change_direction(self.tank.rect)
+
+    def _check_enemy_player_collisions(self):
+        """
+        Проверяет столкновение танка противника с вражеским танком и в случае
+        столкновения количество жизни игрока равно 0
+        """
+        # Уменьшаем rect танка игрока на 40 пикселей по каждой стороне
+        self.tank.rect.inflate_ip(-40, -40)
+
+        for enemy in self.enemies:
+            if enemy.rect.colliderect(self.tank.rect):
+                self.tank.lives = 0  # Обнуляем количество жизней. Game Over
+                self._check_player_alive()
+
+        # Возвращаем оригинальный размер rect танка игрока
+        self.tank.rect.inflate_ip(40, 40)
+
+    def _check_player_alive(self):
+        """
+        Проверяет количество жизней игрока и устанавливает
+        флаг "жив" или "мертв".
+        """
+        if self.tank.lives <= 0:
+            self.tank.alive = False
+
+    def return_to_menu(self):
+        """
+        Логика возврата в меню
+        """
+        self.__init__()  # Пересоздаем объект для сброса игры в начальное состояние
+        menu = Menu(self.screen, self.settings)
+        menu.show_menu()
+        self.run_game()
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)  # Цвет главного экрана
@@ -211,15 +258,28 @@ class OldTank:
                 (255, 255, 255)
             )
             self.screen.blit(lives_text, (10, 10))
+            if not self.enemies:
+                congrats_text = self.game_end_font.render(
+                    "Поздравляю! Вы победили!",
+                    True,
+                    (2, 88, 56)
+                )
+                self.screen.blit(congrats_text, (
+                    self.settings.screen_width // 2 - 150,
+                    self.settings.screen_height // 2 - 20))
+                self.menu_button.draw()
         else:
-            game_over_text = self.font.render(
+            game_over_text = self.game_end_font.render(
                 "Game Over",
                 True,
                 (255, 0, 0)
             )
             self.screen.blit(game_over_text, (
-            self.settings.screen_width // 2 - 50,
-            self.settings.screen_height // 2))
+                self.settings.screen_width // 2 - 50,
+                self.settings.screen_height // 2))
+
+            # Отрисовка кнопки
+            self.menu_button.draw()
 
         pygame.display.flip()  # Отображение экрана.
 
