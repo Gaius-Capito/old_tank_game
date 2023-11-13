@@ -9,9 +9,20 @@ git clone https://github.com/Gaius-Capito/old_tank_game.git
 ```
 
 - Установите и активируйте виртуальное окружение
+```
+python -m venv venv
+```
+
+```
+source venv/source/activate
+```
 - Установите зависимости из файла requirements.txt
 
 ```
 pip install -r requirements.txt
 ```
 - Запустите файл main.py
+```
+cd old_tank_game
+python3 main.py
+```
