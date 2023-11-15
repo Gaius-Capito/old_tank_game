@@ -265,7 +265,7 @@ class OldTank:
                     (2, 88, 56)
                 )
                 self.screen.blit(congrats_text, (
-                    self.settings.screen_width // 2 - 150,
+                    self.settings.screen_width // 2 - 200,
                     self.settings.screen_height // 2 - 20))
                 self.menu_button.draw()
         else:
@@ -275,8 +275,8 @@ class OldTank:
                 (255, 0, 0)
             )
             self.screen.blit(game_over_text, (
-                self.settings.screen_width // 2 - 50,
-                self.settings.screen_height // 2))
+                self.settings.screen_width // 2 - 75,
+                self.settings.screen_height // 2 - 75))
 
             # Отрисовка кнопки
             self.menu_button.draw()

@@ -9,7 +9,7 @@ class Settings:
     screen_width: int = 1200
     screen_height: int = 800
     FPS: int = 10
-    bg_color: tuple = (192, 192, 192)
+    bg_color: tuple = (150, 150, 150)
     font_path: str = 'font/d9464-arkhip_font.ttf'
 
     tank_speed: int = 5
@@ -22,7 +22,7 @@ class Settings:
     bullet_color: tuple = (128, 0, 0)
     enemy_bullet_color: tuple = (128, 0, 128)
     bullets_allowed: int = 4
-    enemy_bullets_allowed: int = 1
+    enemy_bullets_allowed: int = 2
 
     # настройки вражеских танков
     enemy_number: int = 10
